@@ -17,19 +17,24 @@ const JsCalculator = () => {
           setselected(" ")
         }
     }
+    const operations=[{op:"+"},{op:"-"},{op:"/"},{op:"%"},{op:"*"}]
 
     const calculate=(e)=>{
         try{
-            setselected(eval(selected))
+            let end=selected.charAt(selected.length-1)
+           if(operations.some(el=>el.op === end))
+          {
+           const result=selected.slice(0,-1)     
+           setselected(eval(result))      
+          }
+          setselected(eval(selected))
+
         }
         catch(error)
         {
-
-            setselected("Undefined")
-
+         setselected("Error")
         }
     }
-    const operations=[{op:"+"},{op:"-"},{op:"/"},{op:"%"},{op:"*"}]
 const add=()=>{setselected(selected+"+")
     let end=selected.charAt(selected.length-1)
     try{
@@ -80,14 +85,7 @@ const restrict=()=>{
         setselected(selected.slice(0,-1))
     }
 }
-const restrictend=()=>{
-    let end=selected.charAt(selected.length-1)
-    if(operations.some(el=>el.op === end))
-    {
-        setselected(selected.slice(0,-1)) 
-        
-    }
-}
+
 <Search
     value={selected}
     showNoResults={false}
@@ -108,6 +106,7 @@ const restrictend=()=>{
         }}>
                     <input id="txtName"  onKeyDownCapture={(event) => {
     if (event.key === "=" || event.key ==="Enter") {
+        
         calculate(event)
         event.preventDefault()}
         if(Object.keys(selected).length===0 && event.key==="0")
@@ -160,7 +159,7 @@ document.getElementById("focus").addEventListener("click",()=>{
                 <li className='p-2 w-10 flex shadow-lg  bg-gray-700  rounded-lg  m-4 select-none' onClick={()=>{setselected(selected+"0");restrict();}}>0</li>
                 <li className='p-2 w-10 flex shadow-lg bg-gray-700  rounded-lg  m-4 select-none' onClick={()=>{setselected(selected+"00");restrict();}}>00</li>
                 {row5.map((list)=><li className='p-2 w-10 flex shadow-lg bg-gray-700 rounded-lg  m-4 select-none'  onClick={()=>setselected(selected+list)} key={list}>{list}</li>)}
-                <li className='p-2 w-10 flex shadow-lg font-bold bg-yellow-400 text-black rounded-lg  m-4 select-none' onClick={()=>{calculate();restrictend();}}>=</li>
+                <li className='p-2 w-10 flex shadow-lg font-bold bg-yellow-400 text-black rounded-lg  m-4 select-none' onClick={()=>calculate()}>=</li>
 
                 </div>
 
