@@ -35,59 +35,66 @@ const JsCalculator = () => {
          setselected("Error")
         }
     }
-const add=()=>{setselected(selected+"+")
-    let end=selected.charAt(selected.length-1)
-    try{
+const add=()=>{
+    if(selected.length>=1)
+    {setselected(selected+"+")}
+    try{    let end=selected.charAt(selected.length-1)
+
     if(operations.some(el=>el.op === end))
         setselected(selected.slice(0,-1)+"+")
     
     }
     catch(error){
-        setselected("+")}
+        setselected(selected+"+")}
 
 }
-const sub=()=>{setselected(selected+"-")
-    let subend=selected.charAt(selected.length-1)
-    try{
-    if(operations.some(el=>el.op === subend))
+const sub=()=>{if(selected.length>=1)
+    {setselected(selected+"-")}
+    try{    let end=selected.charAt(selected.length-1)
+
+    if(operations.some(el=>el.op === end))
         setselected(selected.slice(0,-1)+"-")}
     catch(error){
-        setselected(selected,"-")
+        setselected(selected+"-")
     }
 }
-const mul=()=>{setselected(selected+"*")
-    let end=selected.charAt(selected.length-1)
-    try{
+const mul=()=>{if(selected.length>=1)
+    {setselected(selected+"*")}
+    try{    let end=selected.charAt(selected.length-1)
+
     if(operations.some(el=>el.op === end))
         setselected(selected.slice(0,-1)+"*")}
     catch(error){
-        setselected(selected,"*")}
+        setselected(selected+"*")}
 }
-const div=()=>{setselected(selected+"/")
-    let end=selected.charAt(selected.length-1)
-    try{
+const div=()=>{if(selected.length>=1)
+    {setselected(selected+"/")}
+    try{    let end=selected.charAt(selected.length-1)
+
     if(operations.some(el=>el.op === end))
         setselected(selected.slice(0,-1)+"/")}
     catch(error){
-        setselected(selected,"/")}
+        setselected(selected+"/")}
 }
-const mod=()=>{setselected(selected+"%")
-    let end=selected.charAt(selected.length-1)
-    try{
+const mod=()=>{if(selected.length>=1)
+    {setselected(selected+"%")}
+    try{    
+        let end=selected.charAt(selected.length-1)
     if(operations.some(el=>el.op === end))
         setselected(selected.slice(0,-1)+"%")}
     catch(error){
-        setselected(selected,"%")}
+        setselected(selected+"%")}
 }    
 
 const restrict=()=>{
-    if(selected.length==0){
+    if(selected.length===0){
         setselected(selected.slice(0,-1))
     }
+    
 }
 
 <Search
-    value={selected}
+    value={selected.toString()}
     showNoResults={false}
     onKeyDown={calculate}
   />
@@ -106,13 +113,41 @@ const restrict=()=>{
         }}>
                     <input id="txtName"  onKeyDownCapture={(event) => {
     if (event.key === "=" || event.key ==="Enter") {
-        
-        calculate(event)
+        let end=selected.charAt(selected.length-1)
+           if(operations.some(el=>el.op === end))
+          {const result=selected.slice(0,-1)     
+            setselected(eval(result))
+            event.preventDefault()}
+         else{ calculate(event)
         event.preventDefault()}
-        if(Object.keys(selected).length===0 && event.key==="0")
+        setselected("Error")
+    }
+        if(document.getElementById("txtName").value=="" && event.key==="0")
+        {           
+            event.preventDefault()
+
+        }
+        if(document.getElementById("txtName").value=="" && event.key==="+")
         {           
             event.preventDefault()
         }
+        if(document.getElementById("txtName").value=="" && event.key==="-")
+        {           
+            event.preventDefault()
+        }
+        if(document.getElementById("txtName").value=="" && event.key==="/")
+        {           
+            event.preventDefault()
+        }
+        if(document.getElementById("txtName").value=="" && event.key==="%")
+        {           
+            event.preventDefault()
+        }
+        if(document.getElementById("txtName").value=="" && event.key==="*")
+        {           
+            event.preventDefault()
+        }
+        
         if(event.keyCode>=65 && event.keyCode<=90)
         {       
             event.preventDefault()
@@ -152,7 +187,7 @@ document.getElementById("focus").addEventListener("click",()=>{
                 </div>
                 <div className='flex'>
                 {row4.map((list)=><li className='p-2 w-10 flex shadow-lg bg-gray-700 rounded-lg  m-4 select-none'  onClick={()=>setselected(selected+list)} key={list}>{list}</li>)}
-                <li id="addition" className='p-2  w-10 font-bold flex shadow-lg bg-gray-700 rounded-lg text-teal-400 select-none  m-4' onClick={()=>{setselected(selected+"+");add();}}   >+</li>
+                <li id="addition" className='p-2  w-10 font-bold flex shadow-lg bg-gray-700 rounded-lg text-teal-400 select-none  m-4' onClick={()=>{setselected(selected+"+");restrict();add();}}   >+</li>
                 </div>
 
                 <div className='flex'>
