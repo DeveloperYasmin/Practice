@@ -120,7 +120,6 @@ const restrict=()=>{
             event.preventDefault()}
          else{ calculate(event)
         event.preventDefault()}
-        setselected("Error")
     }
         if(document.getElementById("txtName").value=="" && event.key==="0")
         {           
